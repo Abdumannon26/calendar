@@ -1,0 +1,305 @@
+table {
+  border-spacing: 0;
+  tbody {
+    >tr {
+      >td {
+        padding: 4px 0;
+      }
+    }
+  }
+
+}
+
+.datepicker {
+  margin-top: 15px;
+  max-width: 800px;
+  width: 100%;
+  border: 2px solid red;
+  padding: 24px;
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    &-title {
+      font-family: 'Lato';
+      font-style: normal;
+      font-weight: 900;
+      font-size: 20px;
+      line-height: 32px;
+      display: flex;
+      align-items: center;
+      font-feature-settings: 'pnum' on, 'lnum' on;
+      color: #191919;
+
+    }
+
+    &-btn {
+      font-family: 'Lato';
+      font-style: normal;
+      font-weight: 900;
+      font-size: 13px;
+      line-height: 22px;
+      letter-spacing: 0.25px;
+      color: #191919;
+      cursor: pointer;
+      padding: 9px 22px;
+      background: #F2F2F2;
+      border-radius: 8px;
+
+    }
+
+    &-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  &-group {
+    margin-right: 24px;
+    width: 375px;
+  }
+
+  &-group:last-child {
+    margin-right: 0;
+  }
+
+  &-prev-icon {
+    transform: rotate(180deg);
+  }
+
+  &-weekheader {
+    padding: 11.5px 17px;
+
+    &-title {
+      font-family: 'Lato';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 140%;
+      color: #191919;
+    }
+  }
+
+  &-weeknumber {
+    padding: 4px 0;
+    &-title {
+      height: 40px;
+      padding: 0 4px;
+      text-align: center;
+      font-family: 'Lato';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 16px;
+      color: #191919;
+      margin-bottom: 4px;
+    }
+    &-title:hover {
+      background: #FEF0E6;
+      border-radius: 8px;
+      border: 1px solid #F96C00;
+      box-sizing: border-box;
+    }
+
+  }
+  &-sum {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 9px;
+    line-height: 16px;
+
+    color: #35C768;
+  }
+}
+
+.p-disabled {
+  color: #CBCBCB;
+}
+.p-highlight{
+  background: #F96C00!important;
+  border-radius: 8px;
+  color: #FFFFFF;
+}
+.p-active{
+  background: #FEF0E6;
+}
+
+.p-calendar {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+}
+
+
+.p-calendar .p-inputtext {
+  flex: 1 1 auto;
+  width: 1%;
+}
+
+.p-calendar-w-btn .p-inputtext {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.p-calendar-w-btn .p-datepicker-trigger {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Fluid */
+.p-fluid .p-calendar {
+  display: flex;
+}
+
+.p-fluid .p-calendar .p-inputtext {
+  width: 1%;
+}
+
+/* Datepicker */
+.p-calendar .p-datepicker {
+  min-width: 100%;
+}
+
+.p-datepicker {
+  width: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.p-datepicker-inline {
+  display: inline-block;
+  position: static;
+  overflow-x: auto;
+}
+
+/* Header */
+.p-datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.p-datepicker-header .p-datepicker-title {
+  margin: 0 auto;
+}
+
+.p-datepicker-prev,
+.p-datepicker-next {
+  outline: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+
+/* Multiple Month DatePicker */
+.p-datepicker-multiple-month .p-datepicker-group-container {
+  display: flex;
+}
+
+.p-datepicker-multiple-month .p-datepicker-group-container .p-datepicker-group {
+  flex: 1 1 auto;
+}
+
+/* Multiple Month DatePicker */
+.p-datepicker-multiple-month .p-datepicker-group-container {
+  display: flex;
+}
+
+/* DatePicker Table */
+.p-datepicker table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.p-datepicker td > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Month Picker */
+.p-monthpicker-month {
+  width: 33.3%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+/*  Button Bar */
+.p-datepicker-buttonbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Time Picker */
+.p-timepicker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.p-timepicker button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.p-timepicker > div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Touch UI */
+.p-datepicker-touch-ui,
+.p-calendar .p-datepicker-touch-ui {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 80vw;
+  transform: translate(-50%, -50%);
+}
+
+/* Year Picker */
+.p-yearpicker-year {
+  width: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.p-calendar-clear-icon {
+  position: absolute;
+  top: 50%;
+  margin-top: -.5rem;
+  cursor: pointer;
+}
+
+.p-calendar-clearable {
+  position: relative;
+}
