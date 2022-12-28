@@ -225,6 +225,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
   @ViewChild('container', {static: false}) containerViewChild: ElementRef;
 
   @ViewChild('inputfield', {static: false}) inputfieldViewChild: ElementRef;
+  @ViewChild('inputfield2', {static: false}) input2: ElementRef;
 
   @ViewChild('contentWrapper', {static: false}) set content(content: ElementRef) {
     this.contentViewChild = content;
@@ -357,6 +358,8 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
 
   preventFocus: boolean;
   dateMeta: any = [];
+  endDate: any = null;
+  startDate: any = null;
 
   @Input() get view(): CalendarTypeView {
     return this._view;
@@ -954,7 +957,8 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
 
           formattedValue = this.formatDateTime(startDate);
           if (endDate) {
-            formattedValue += ' ' + this.rangeSeparator + ' ' + this.formatDateTime(endDate);
+            // formattedValue += ' ' + this.rangeSeparator + ' ' + this.formatDateTime(endDate);
+            this.endDate = this.formatDateTime(endDate)
           }
         }
       }
@@ -964,6 +968,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     this.updateFilledState();
     if (this.inputfieldViewChild && this.inputfieldViewChild.nativeElement) {
       this.inputfieldViewChild.nativeElement.value = this.inputFieldValue;
+      this.input2.nativeElement.value = this.endDate;
     }
   }
 
