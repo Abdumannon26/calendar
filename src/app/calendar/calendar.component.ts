@@ -1,5 +1,5 @@
-import {animate, AnimationEvent, state, style, transition, trigger} from '@angular/animations';
-import {CommonModule} from '@angular/common';
+import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,12 +20,18 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {OverlayService, PrimeNGConfig, PrimeTemplate, SharedModule, TranslationKeys} from '../calendar/api/public_api';
-import {ConnectedOverlayScrollHandler, DomHandler} from '../calendar/dom/public_api';
-import {ObjectUtils, UniqueComponentId, ZIndexUtils} from '../calendar/utils/public_api';
-import {Subscription} from 'rxjs';
-import {AngularSvgIconModule} from "angular-svg-icon";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  OverlayService,
+  PrimeNGConfig,
+  PrimeTemplate,
+  SharedModule,
+  TranslationKeys
+} from '../calendar/api/public_api';
+import { ConnectedOverlayScrollHandler, DomHandler } from '../calendar/dom/public_api';
+import { ObjectUtils, UniqueComponentId, ZIndexUtils } from '../calendar/utils/public_api';
+import { Subscription } from 'rxjs';
+import { AngularSvgIconModule } from "angular-svg-icon";
 
 export const CALENDAR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -245,6 +251,8 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
   contentViewChild: ElementRef;
 
   value: any;
+  value1: any;
+  value2: any;
 
   dates: any[];
 
@@ -298,7 +306,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
 
   filled: boolean | any;
 
-  inputFieldValue: string | any = '';
+  inputFieldValue: any = null;
 
   _minDate: Date;
 
@@ -507,6 +515,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
 
   private isHovered = false;
   private rangeDates: any = [];
+  nowInputId: string;
 
   constructor(public el: ElementRef,
               public renderer: Renderer2,
@@ -514,6 +523,8 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
               private zone: NgZone,
               private config: PrimeNGConfig,
               public overlayService: OverlayService) {
+    console.log(this.inputFieldValue)
+    console.log(this.endDate)
   }
 
   ngOnInit() {
@@ -859,7 +870,6 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
         day.isIntoRange = this.isDateBetween(start, endDate, day)
       }
     }
-    console.log(this.rangeDates);
   }
 
   hoverRange(event, dateMeta) {
@@ -937,7 +947,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
   }
 
   updateInputfield() {
-    let formattedValue = '';
+    let formattedValue: any = null;
 
     if (this.value) {
       if (this.isSingleSelection()) {
@@ -954,8 +964,9 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
         if (this.value && this.value.length) {
           let startDate = this.value[0];
           let endDate = this.value[1];
-
-          formattedValue = this.formatDateTime(startDate);
+          if (startDate) {
+            formattedValue = this.formatDateTime(startDate);
+          }
           if (endDate) {
             // formattedValue += ' ' + this.rangeSeparator + ' ' + this.formatDateTime(endDate);
             this.endDate = this.formatDateTime(endDate)
@@ -963,13 +974,16 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
         }
       }
     }
-
     this.inputFieldValue = formattedValue;
     this.updateFilledState();
     if (this.inputfieldViewChild && this.inputfieldViewChild.nativeElement) {
       this.inputfieldViewChild.nativeElement.value = this.inputFieldValue;
+    }
+    if (this.input2 && this.input2.nativeElement) {
       this.input2.nativeElement.value = this.endDate;
     }
+    console.log(this.inputFieldValue)
+
   }
 
   formatDateTime(date) {
@@ -1045,19 +1059,31 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
       if (this.value && this.value.length) {
         let startDate = this.value[0];
         let endDate = this.value[1];
-
-        if (!endDate && date.getTime() >= startDate.getTime()) {
-          endDate = date;
-        } else if (endDate && date.getTime() >= endDate.getTime()) {
+        if (this.nowInputId === 'range1') {
+          startDate = date
+        } else if (this.nowInputId === 'range2') {
           endDate = date
-        } else {
-          startDate = date;
-          endDate = null;
         }
+        // if (!endDate && date.getTime() >= startDate.getTime()) {
+        //   endDate = date;
+        // } else if (endDate && date.getTime() >= endDate.getTime()) {
+        //   endDate = date
+        // } else if (endDate && date.getDate() <= endDate.getTime()) {
+        //   startDate = date;
+        // } else {
+        //   startDate = date;
+        //   endDate = null;
+        // }
 
         this.updateModel([startDate, endDate]);
       } else {
-        this.updateModel([date, null]);
+        if (this.nowInputId === 'range1') {
+          this.updateModel([date, null]);
+          this.input2.nativeElement.focus()
+        } else if (this.nowInputId === 'range2') {
+          this.updateModel([null, date]);
+          this.inputfieldViewChild.nativeElement.focus()
+        }
       }
     }
 
@@ -1066,7 +1092,6 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
 
   updateModel(value) {
     this.value = value;
-
     if (this.dataType == 'date') {
       this.onModelChange(this.value);
     } else if (this.dataType == 'string') {
@@ -1303,6 +1328,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
   }
 
   onInputFocus(event: Event) {
+    this.nowInputId = (<HTMLElement>event.target).id
     this.focus = true;
     if (this.showOnFocus) {
       this.showOverlay();
@@ -1334,9 +1360,14 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  clear() {
-    this.inputFieldValue = null;
-    this.value = null;
+  clear(value: string) {
+    if (value === 'startDate') {
+      this.inputFieldValue = null;
+      this.value[0] = null;
+    } else if (value === 'endDate') {
+      this.endDate = null;
+      this.value[1] = null;
+    }
     this.onModelChange(this.value);
     this.onClear.emit();
   }
