@@ -3,6 +3,7 @@
       [ngStyle]="style" [class]="styleClass">
             <ng-template [ngIf]="!inline && inputId == 'range'">
               <div class="calendar-input-container mr"
+                   [ngClass]="{'calendar-input-container-focus ': nowInputId === 'range1' }"
                    (click)="onInputClick()">
                 <input class="calendar-input"
                        #inputfield
@@ -38,6 +39,7 @@
                    ></svg-icon>
               </div>
               <div class="calendar-input-container"
+                   [ngClass]="{'calendar-input-container-focus ': nowInputId === 'range2' }"
                    (click)="onInputClick()">
                  <input
                    class="calendar-input"
@@ -142,8 +144,9 @@
                       <div
                         class="datepicker-header-title">{{nowInputId === 'range1' ? 'Выберите дату отправления' : 'Выберите дату возвращения'}}</div>
                       <div>
-                        <button [disabled]="nowInputId === 'range1'"
-                                class="datepicker-header-btn">Без обратного билета</button>
+                        <button [disabled]="nowInputId != 'range2' && inputFieldValue === null"
+                                (click)="withoutBack()"
+                                class="datepicker-header-btn" >Без обратного билета</button>
                       </div>
                     </div>
                     <div class="p-datepicker-group-container">
@@ -213,8 +216,9 @@
                                                       <div>
                                                         <ng-container
                                                           *ngIf="!dateTemplate">{{ date.day }}
-                                                          <div [ngClass]="{ 'p-highlight': isSelected(date)}"
-                                                               class="datepicker-sum">2 108 c</div>
+                                                          <div *ngIf="ticketPrices[date.month]" [ngClass]="{ 'p-highlight': isSelected(date)}"
+                                                               [style.color]="ticketPrices[date.month][date.day]?.color"
+                                                               class="datepicker-sum">{{ticketPrices[date.month][date.day]?.price}}</div>
                                                         </ng-container>
                                                         <ng-container
                                                           *ngTemplateOutlet="dateTemplate; context: { $implicit: date }"></ng-container>

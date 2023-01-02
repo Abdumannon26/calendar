@@ -251,8 +251,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
   contentViewChild: ElementRef;
 
   value: any;
-  value1: any;
-  value2: any;
+
 
   dates: any[];
 
@@ -516,15 +515,56 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
   private isHovered = false;
   private rangeDates: any = [];
   nowInputId: string;
+  ticketPrices: any = {
+    10: {
+      27: {
+        price: 1223,
+        color: 'red'
+      },
+      28: {
+        price: 1223,
+        color: 'yellow'
+      },
+      29: {
+        price: 1223,
+        color: 'green'
+      },
+      30: {
+        price: 1223,
+        color: 'green'
+      }
+    },
+    11: {
+      1: {
+        price: 123,
+        color: 'green'
+      },
+      2: {
+        price: 12124,
+        color: 'green'
+      }
+    }
+    ,
+    0: {
+      1: {
+        price: 123,
+        color: 'green'
+      },
+      2: {
+        price: 12124,
+        color: 'green'
+      }
+    }
+  }
+
 
   constructor(public el: ElementRef,
               public renderer: Renderer2,
               public cd: ChangeDetectorRef,
               private zone: NgZone,
               private config: PrimeNGConfig,
-              public overlayService: OverlayService) {
-    console.log(this.inputFieldValue)
-    console.log(this.endDate)
+              public overlayService: OverlayService
+  ) {
   }
 
   ngOnInit() {
@@ -593,11 +633,19 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  getTranslation(option: string) {
+  getTranslation(option
+                   :
+                   string
+  ) {
     return this.config.getTranslation(option);
   }
 
-  populateYearOptions(start: number, end: number) {
+  populateYearOptions(start
+                        :
+                        number, end
+                        :
+                        number
+  ) {
     this.yearOptions = [];
 
     for (let i = start; i <= end; i++) {
@@ -634,7 +682,12 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return yearPickerValues;
   }
 
-  createMonths(month: number, year: number) {
+  createMonths(month
+                 :
+                 number, year
+                 :
+                 number
+  ) {
     this.months = this.months = [];
     this.rangeDates = [];
     for (let i = 0; i < this.numberOfMonths; i++) {
@@ -649,7 +702,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  getWeekNumber(date: Date) {
+  getWeekNumber(date
+                  :
+                  Date
+  ) {
     let checkDate = new Date(date.getTime());
     checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7));
     let time = checkDate.getTime();
@@ -658,7 +714,12 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return Math.floor(Math.round((time - checkDate.getTime()) / 86400000) / 7) + 1;
   }
 
-  createMonth(month: number, year: number) {
+  createMonth(month
+                :
+                number, year
+                :
+                number
+  ) {
     let dates: any = [];
     let firstDay = this.getFirstDayOfMonthIndex(month, year);
     let daysLength = this.getDaysCountInMonth(month, year);
@@ -744,7 +805,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     };
   }
 
-  initTime(date: Date) {
+  initTime(date
+             :
+             Date
+  ) {
     this.pm = date.getHours() > 11;
 
     if (this.showTime) {
@@ -856,10 +920,14 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     event.preventDefault();
   }
 
-  leaveFromDate(): void {
+  leaveFromDate()
+    :
+    void {
     // 1 faqat berun az range toza shavad
     // 2 agar 2 select nashuda boshad hamash toza shavad
-    if (!this.value) {
+    if (!
+      this.value
+    ) {
       return;
     } else if (!(this.value[1] instanceof Date)) {
       this.rangeDates.forEach(day => day.isIntoRange = false);
@@ -877,13 +945,13 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
       return;
     }
     for (let day of this.rangeDates) {
+      console.log(this.ticketPrices[day?.month][day?.day].price);
       const endDate = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
       day.isIntoRange = this.isDateBetween(this.value[0], endDate, day)
     }
   }
 
   onDateSelect(event, dateMeta) {
-    console.log(1)
     if (this.disabled || !dateMeta.selectable) {
       event.preventDefault()
       return;
@@ -982,8 +1050,6 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     if (this.input2 && this.input2.nativeElement) {
       this.input2.nativeElement.value = this.endDate;
     }
-    console.log(this.inputFieldValue)
-
   }
 
   formatDateTime(date) {
@@ -1003,7 +1069,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return formattedValue;
   }
 
-  setCurrentHourPM(hours: number) {
+  setCurrentHourPM(hours
+                     :
+                     number
+  ) {
     if (this.hourFormat == '12') {
       this.pm = hours > 11;
       if (hours >= 12) {
@@ -1016,7 +1085,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  setCurrentView(currentView: CalendarTypeView) {
+  setCurrentView(currentView
+                   :
+                   CalendarTypeView
+  ) {
     this.currentView = currentView;
     this.cd.detectChanges();
     this.alignOverlay();
@@ -1060,9 +1132,19 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
         let startDate = this.value[0];
         let endDate = this.value[1];
         if (this.nowInputId === 'range1') {
-          startDate = date
+          if (endDate && date.getTime() > endDate.getTime()) {
+            endDate = date
+          } else {
+            startDate = date;
+            this.input2.nativeElement.focus();
+          }
         } else if (this.nowInputId === 'range2') {
-          endDate = date
+          if (startDate && date.getTime() < startDate.getTime()) {
+            startDate = date;
+            endDate = this.value[0]
+          } else {
+            endDate = date
+          }
         }
         // if (!endDate && date.getTime() >= startDate.getTime()) {
         //   endDate = date;
@@ -1076,6 +1158,9 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
         // }
 
         this.updateModel([startDate, endDate]);
+        if (startDate && endDate) {
+          this.hideOverlay()
+        }
       } else {
         if (this.nowInputId === 'range1') {
           this.updateModel([date, null]);
@@ -1107,7 +1192,12 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  getFirstDayOfMonthIndex(month: number, year: number) {
+  getFirstDayOfMonthIndex(month
+                            :
+                            number, year
+                            :
+                            number
+  ) {
     let day = new Date();
     day.setDate(1);
     day.setMonth(month);
@@ -1117,16 +1207,31 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return dayIndex >= 7 ? dayIndex - 7 : dayIndex;
   }
 
-  getDaysCountInMonth(month: number, year: number) {
+  getDaysCountInMonth(month
+                        :
+                        number, year
+                        :
+                        number
+  ) {
     return 32 - this.daylightSavingAdjust(new Date(year, month, 32)).getDate();
   }
 
-  getDaysCountInPrevMonth(month: number, year: number) {
+  getDaysCountInPrevMonth(month
+                            :
+                            number, year
+                            :
+                            number
+  ) {
     let prev = this.getPreviousMonthAndYear(month, year);
     return this.getDaysCountInMonth(prev.month, prev.year);
   }
 
-  getPreviousMonthAndYear(month: number, year: number) {
+  getPreviousMonthAndYear(month
+                            :
+                            number, year
+                            :
+                            number
+  ) {
     let m, y;
 
     if (month === 0) {
@@ -1140,7 +1245,12 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return {month: m, year: y};
   }
 
-  getNextMonthAndYear(month: number, year: number) {
+  getNextMonthAndYear(month
+                        :
+                        number, year
+                        :
+                        number
+  ) {
     let m, y;
 
     if (month === 11) {
@@ -1160,7 +1270,9 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
   }
 
-  isSelected(dateMeta): boolean | any {
+  isSelected(dateMeta)
+    :
+    boolean | any {
     if (!this.dateMeta.length) {
       this.dateMeta.push(dateMeta)
     }
@@ -1187,7 +1299,9 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  isActive(dateMeta): boolean | any {
+  isActive(dateMeta)
+    :
+    boolean | any {
     if (this.value) {
       if (this.isRangeSelection()) {
         if (this.value[1]) {
@@ -1231,7 +1345,9 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     else return false;
   }
 
-  isDateBetween(start, end, dateMeta): boolean {
+  isDateBetween(start, end, dateMeta)
+    :
+    boolean {
     let between: boolean = false;
     if (start && end) {
       let date: Date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
@@ -1241,23 +1357,33 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return between;
   }
 
-  isSingleSelection(): boolean {
+  isSingleSelection()
+    :
+    boolean {
     return this.selectionMode === 'single';
   }
 
-  isRangeSelection(): boolean {
+  isRangeSelection()
+    :
+    boolean {
     return this.selectionMode === 'range';
   }
 
-  isMultipleSelection(): boolean {
+  isMultipleSelection()
+    :
+    boolean {
     return this.selectionMode === 'multiple';
   }
 
-  isToday(today, day, month, year): boolean {
+  isToday(today, day, month, year)
+    :
+    boolean {
     return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
   }
 
-  isSelectable(day, month, year, otherMonth): boolean {
+  isSelectable(day, month, year, otherMonth)
+    :
+    boolean {
     let validMin = true;
     let validMax = true;
     let validDate = true;
@@ -1306,7 +1432,15 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return validMin && validMax && validDate && validDay;
   }
 
-  isDateDisabled(day: number, month: number, year: number): boolean {
+  isDateDisabled(day
+                   :
+                   number, month
+                   :
+                   number, year
+                   :
+                   number
+  ):
+    boolean {
     if (this.disabledDates) {
       for (let disabledDate of this.disabledDates) {
         if (disabledDate.getFullYear() === year && disabledDate.getMonth() === month && disabledDate.getDate() === day) {
@@ -1318,7 +1452,15 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return false;
   }
 
-  isDayDisabled(day: number, month: number, year: number): boolean {
+  isDayDisabled(day
+                  :
+                  number, month
+                  :
+                  number, year
+                  :
+                  number
+  ):
+    boolean {
     if (this.disabledDays) {
       let weekday = new Date(year, month, day);
       let weekdayNumber = weekday.getDay();
@@ -1327,7 +1469,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return false;
   }
 
-  onInputFocus(event: Event) {
+  onInputFocus(event
+                 :
+                 Event
+  ) {
     this.nowInputId = (<HTMLElement>event.target).id
     this.focus = true;
     if (this.showOnFocus) {
@@ -1342,7 +1487,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  onInputBlur(event: Event) {
+  onInputBlur(event
+                :
+                Event
+  ) {
     this.focus = false;
     this.onBlur.emit(event);
     if (!this.keepInvalid) {
@@ -1360,10 +1508,14 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  clear(value: string) {
+  clear(value
+          :
+          string
+  ) {
     if (value === 'startDate') {
       this.inputFieldValue = null;
-      this.value[0] = null;
+      this.endDate = null;
+      this.value = null;
     } else if (value === 'endDate') {
       this.endDate = null;
       this.value[1] = null;
@@ -1885,13 +2037,19 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     event.preventDefault();
   }
 
-  onMonthDropdownChange(m: string) {
+  onMonthDropdownChange(m
+                          :
+                          string
+  ) {
     this.currentMonth = parseInt(m);
     this.onMonthChange.emit({month: this.currentMonth + 1, year: this.currentYear});
     this.createMonths(this.currentMonth, this.currentYear);
   }
 
-  onYearDropdownChange(y: string) {
+  onYearDropdownChange(y
+                         :
+                         string
+  ) {
     this.currentYear = parseInt(y);
     this.onYearChange.emit({month: this.currentMonth + 1, year: this.currentYear});
     this.createMonths(this.currentMonth, this.currentYear);
@@ -1908,7 +2066,16 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return hours;
   };
 
-  validateTime(hour: number, minute: number, second: number, pm: boolean) {
+  validateTime(hour
+                 :
+                 number, minute
+                 :
+                 number, second
+                 :
+                 number, pm
+                 :
+                 boolean
+  ) {
     let value = this.value;
     const convertedHour = this.convertTo24Hour(hour, pm);
     if (this.isRangeSelection()) {
@@ -1973,14 +2140,24 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     event.preventDefault();
   }
 
-  onTimePickerElementMouseDown(event: Event, type: number, direction: number) {
+  onTimePickerElementMouseDown(event
+                                 :
+                                 Event, type
+                                 :
+                                 number, direction
+                                 :
+                                 number
+  ) {
     if (!this.disabled) {
       this.repeat(event, null, type, direction);
       event.preventDefault();
     }
   }
 
-  onTimePickerElementMouseUp(event: Event) {
+  onTimePickerElementMouseUp(event
+                               :
+                               Event
+  ) {
     if (!this.disabled) {
       this.clearTimePickerTimer();
       this.updateTime();
@@ -1994,7 +2171,16 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  repeat(event: Event, interval: number | any, type: number, direction: number) {
+  repeat(event
+           :
+           Event, interval
+           :
+           number | any, type
+           :
+           number, direction
+           :
+           number
+  ) {
     let i = interval || 500;
 
     this.clearTimePickerTimer();
@@ -2157,7 +2343,9 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     this.onInput.emit(event);
   }
 
-  isValidSelection(value): boolean {
+  isValidSelection(value)
+    :
+    boolean {
     let isValid = true;
     if (this.isSingleSelection()) {
       if (!this.isSelectable(value.getDate(), value.getMonth(), value.getFullYear(), false)) {
@@ -2171,7 +2359,11 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return isValid;
   }
 
-  parseValueFromString(text: string): Date | Date[] | any {
+  parseValueFromString(text
+                         :
+                         string
+  ):
+    Date | Date[] | any {
     if (!text || text.trim().length === 0) {
       return null;
     }
@@ -2197,7 +2389,11 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return value;
   }
 
-  parseDateTime(text: any): Date {
+  parseDateTime(text
+                  :
+                  any
+  ):
+    Date {
     let date: Date;
     let parts: string[] = text.split(' ');
 
@@ -2289,7 +2485,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  onOverlayAnimationStart(event: AnimationEvent) {
+  onOverlayAnimationStart(event
+                            :
+                            AnimationEvent
+  ) {
     switch (event.toState) {
       case 'visible':
       case 'visibleTouchUI':
@@ -2315,7 +2514,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  onOverlayAnimationDone(event: AnimationEvent) {
+  onOverlayAnimationDone(event
+                           :
+                           AnimationEvent
+  ) {
     switch (event.toState) {
       case 'visible':
       case 'visibleTouchUI':
@@ -2428,9 +2630,14 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  writeValue(value: any): void {
+  writeValue(value
+               :
+               any
+  ):
+    void {
     this.value = value;
-    if (this.value && typeof this.value === 'string') {
+    if (this.value && typeof this.value === 'string'
+    ) {
       try {
         this.value = this.parseValueFromString(this.value);
       } catch {
@@ -2445,15 +2652,27 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     this.cd.markForCheck();
   }
 
-  registerOnChange(fn: Function): void {
+  registerOnChange(fn
+                     :
+                     Function
+  ):
+    void {
     this.onModelChange = fn;
   }
 
-  registerOnTouched(fn: Function): void {
+  registerOnTouched(fn
+                      :
+                      Function
+  ):
+    void {
     this.onModelTouched = fn;
   }
 
-  setDisabledState(val: boolean): void {
+  setDisabledState(val
+                     :
+                     boolean
+  ):
+    void {
     this.disabled = val;
     this.cd.markForCheck();
   }
@@ -2466,8 +2685,13 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return this._firstDayOfWeek || this.getTranslation(TranslationKeys.FIRST_DAY_OF_WEEK);
   }
 
-  // Ported from jquery-ui datepicker formatDate
-  formatDate(date: any, format: any) {
+// Ported from jquery-ui datepicker formatDate
+  formatDate(date
+               :
+               any, format
+               :
+               any
+  ) {
     if (!date) {
       return '';
     }
@@ -2545,7 +2769,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return output;
   }
 
-  formatTime(date: any) {
+  formatTime(date
+               :
+               any
+  ) {
     if (!date) {
       return '';
     }
@@ -2579,7 +2806,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return output;
   }
 
-  parseTime(value: any) {
+  parseTime(value
+              :
+              any
+  ) {
     let tokens: string[] = value.split(':');
     let validTokenLength = this.showSeconds ? 3 : 2;
 
@@ -2606,8 +2836,13 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  // Ported from jquery-ui datepicker parseDate
-  parseDate(value: any, format: any) {
+// Ported from jquery-ui datepicker parseDate
+  parseDate(value
+              :
+              any, format
+              :
+              any
+  ) {
     if (format == null || value == null) {
       throw 'Invalid arguments';
     }
@@ -2778,7 +3013,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return date;
   }
 
-  daylightSavingAdjust(date: any) {
+  daylightSavingAdjust(date
+                         :
+                         any
+  ) {
     if (!date) {
       return null;
     }
@@ -2792,7 +3030,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     this.filled = this.inputFieldValue && this.inputFieldValue != '';
   }
 
-  onTodayButtonClick(event: any) {
+  onTodayButtonClick(event
+                       :
+                       any
+  ) {
     let date: Date = new Date();
     let dateMeta = {
       day: date.getDate(),
@@ -2807,7 +3048,10 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     this.onTodayClick.emit(event);
   }
 
-  onClearButtonClick(event: any) {
+  onClearButtonClick(event
+                       :
+                       any
+  ) {
     this.updateModel(null);
     this.updateInputfield();
     this.hideOverlay();
@@ -2919,11 +3163,17 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  isOutsideClicked(event: Event) {
+  isOutsideClicked(event
+                     :
+                     Event
+  ) {
     return !(this.el.nativeElement.isSameNode(event.target) || this.isNavIconClicked(event) || this.el.nativeElement.contains(event.target) || (this.overlay && this.overlay.contains(<Node>event.target)));
   }
 
-  isNavIconClicked(event: Event) {
+  isNavIconClicked(event
+                     :
+                     Event
+  ) {
     return (
       DomHandler.hasClass(event.target, 'p-datepicker-prev') || DomHandler.hasClass(event.target, 'p-datepicker-prev-icon') || DomHandler.hasClass(event.target, 'p-datepicker-next') || DomHandler.hasClass(event.target, 'p-datepicker-next-icon')
     );
@@ -2948,6 +3198,14 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     this.overlay = null;
   }
 
+  withoutBack() {
+    if (this.endDate) {
+      this.endDate = null;
+      this.value[1] = null;
+    }
+    this.hideOverlay()
+  }
+
   ngOnDestroy() {
     if (this.scrollHandler) {
       this.scrollHandler.destroy();
@@ -2967,6 +3225,8 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     this.restoreOverlayAppend();
     this.onOverlayHide();
   }
+
+
 }
 
 @NgModule({
