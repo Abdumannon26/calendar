@@ -1,33 +1,114 @@
 <span #container
       [ngClass]="{ 'p-calendar': true, 'p-calendar-w-btn': showIcon, 'p-calendar-timeonly': timeOnly, 'p-calendar-disabled': disabled, 'p-focus': focus }"
       [ngStyle]="style" [class]="styleClass">
-            <ng-template [ngIf]="!inline">
-                <input
-                  #inputfield
-                  type="text"
-                  [attr.id]="inputId"
-                  [attr.name]="name"
-                  [attr.required]="required"
-                  [attr.aria-required]="required"
-                  [value]="inputFieldValue"
-                  (focus)="onInputFocus($event)"
-                  (keydown)="onInputKeydown($event)"
-                  (click)="onInputClick()"
-                  (blur)="onInputBlur($event)"
-                  [readonly]="readonlyInput"
-                  (input)="onUserInput($event)"
-                  [ngStyle]="inputStyle"
-                  [class]="inputStyleClass"
-                  [placeholder]="placeholder || ''"
-                  [disabled]="disabled"
-                  [attr.tabindex]="tabindex"
-                  [attr.inputmode]="touchUI ? 'off' : null"
-                  [ngClass]="'p-inputtext p-component'"
-                  autocomplete="off"
-                  [attr.aria-labelledby]="ariaLabelledBy"
+            <ng-template [ngIf]="!inline && inputId == 'range'">
+              <div class="calendar-input-container mr"
+                   [ngClass]="{'calendar-input-container-focus ': nowInputId === 'range1' }"
+                   (click)="onInputClick()">
+                <input class="calendar-input"
+                       #inputfield
+                       type="text"
+                       [attr.id]="inputId + 1"
+                       [attr.name]="name"
+                       [attr.required]="required"
+                       [attr.aria-required]="required"
+                       [value]="inputFieldValue"
+                       (focus)="onInputFocus($event)"
+                       (keydown)="onInputKeydown($event)"
+                       (blur)="onInputBlur($event)"
+                       [readonly]="readonlyInput"
+                       (input)="onUserInput($event)"
+                       [ngStyle]="inputStyle"
+                       [class]="inputStyleClass"
+                       [placeholder]="placeholder || 'Туда'"
+                       [disabled]="disabled"
+                       [attr.tabindex]="tabindex"
+                       [attr.inputmode]="touchUI ? 'off' : null"
+                       [ngClass]="'p-inputtext p-component'"
+                       autocomplete="off"
+                       [attr.aria-labelledby]="ariaLabelledBy"
                 />
-                <i *ngIf="showClear && !disabled && value != null" class="p-calendar-clear-icon pi pi-times"
-                   (click)="clear()"></i>
+                    <svg-icon
+                      *ngIf="inputFieldValue != null"
+                      [src]="'./assets/icons/close.svg'"
+                      (click)="clear('startDate')"
+                    ></svg-icon>
+                   <svg-icon
+                     *ngIf="inputFieldValue === null"
+                     [src]="'./assets/icons/Calendar.svg'"
+                   ></svg-icon>
+              </div>
+              <div class="calendar-input-container"
+                   [ngClass]="{'calendar-input-container-focus ': nowInputId === 'range2' }"
+                   (click)="onInputClick()">
+                 <input
+                   class="calendar-input"
+                   #inputfield2
+                   type="text"
+                   [attr.id]="inputId + 2"
+                   [attr.name]="name"
+                   [attr.required]="required"
+                   [attr.aria-required]="required"
+                   [value]="endDate"
+                   (focus)="onInputFocus($event)"
+                   (keydown)="onInputKeydown($event)"
+                   (blur)="onInputBlur($event)"
+                   [readonly]="readonlyInput"
+                   (input)="onUserInput($event)"
+                   [ngStyle]="inputStyle"
+                   [class]="inputStyleClass"
+                   [placeholder]="placeholder || 'Обратно'"
+                   [disabled]="disabled"
+                   [attr.tabindex]="tabindex"
+                   [attr.inputmode]="touchUI ? 'off' : null"
+                   [ngClass]="'p-inputtext p-component'"
+                   autocomplete="off"
+                   [attr.aria-labelledby]="ariaLabelledBy"
+                 />
+              <svg-icon
+                *ngIf="endDate != null"
+                [src]="'./assets/icons/close.svg'"
+                (click)="clear('endDate')"
+              ></svg-icon>
+                   <svg-icon
+                     *ngIf="endDate === null"
+                     [src]="'./assets/icons/Calendar.svg'"
+                   ></svg-icon>
+              </div>
+
+<!--                <i *ngIf="showClear && !disabled && value != null" class="p-calendar-clear-icon pi pi-times"-->
+<!--                   (click)="clear()"></i>-->
+                <button type="button" [attr.aria-label]="iconAriaLabel" *ngIf="showIcon"
+                        (click)="onButtonClick($event, inputfield)" class="p-datepicker-trigger" [disabled]="disabled"
+                        tabindex="0"></button>
+            </ng-template>
+         <ng-template [ngIf]="!inline && inputId == 'simple'">
+              <input
+                #inputfield
+                type="text"
+                [attr.id]="inputId"
+                [attr.name]="name"
+                [attr.required]="required"
+                [attr.aria-required]="required"
+                [value]="inputFieldValue"
+                (focus)="onInputFocus($event)"
+                (keydown)="onInputKeydown($event)"
+                (click)="onInputClick()"
+                (blur)="onInputBlur($event)"
+                [readonly]="readonlyInput"
+                (input)="onUserInput($event)"
+                [ngStyle]="inputStyle"
+                [class]="inputStyleClass"
+                [placeholder]="placeholder || ''"
+                [disabled]="disabled"
+                [attr.tabindex]="tabindex"
+                [attr.inputmode]="touchUI ? 'off' : null"
+                [ngClass]="'p-inputtext p-component'"
+                autocomplete="off"
+                [attr.aria-labelledby]="ariaLabelledBy"
+              />
+<!--                <i *ngIf="showClear && !disabled && value != null" class="p-calendar-clear-icon pi pi-times"-->
+<!--                   (click)="clear()"></i>-->
                 <button type="button" [attr.aria-label]="iconAriaLabel" *ngIf="showIcon"
                         (click)="onButtonClick($event, inputfield)" class="p-datepicker-trigger" [disabled]="disabled"
                         tabindex="0"></button>
@@ -60,9 +141,12 @@
                 <ng-container *ngIf="!timeOnly">
                   <div class="datepicker">
                     <div class="datepicker-header">
-                      <div class="datepicker-header-title">Выберите дату отправления</div>
+                      <div
+                        class="datepicker-header-title">{{nowInputId === 'range1' ? 'Выберите дату отправления' : 'Выберите дату возвращения'}}</div>
                       <div>
-                        <button [disabled]="1" class="datepicker-header-btn">Без обратного билета</button>
+                        <button [disabled]="nowInputId != 'range2' && inputFieldValue === null"
+                                (click)="withoutBack()"
+                                class="datepicker-header-btn" >Без обратного билета</button>
                       </div>
                     </div>
                     <div class="p-datepicker-group-container">
@@ -132,8 +216,9 @@
                                                       <div>
                                                         <ng-container
                                                           *ngIf="!dateTemplate">{{ date.day }}
-                                                          <div [ngClass]="{ 'p-highlight': isSelected(date)}"
-                                                               class="datepicker-sum">2 108 c</div>
+                                                          <div *ngIf="ticketPrices[date.month]" [ngClass]="{ 'p-highlight': isSelected(date)}"
+                                                               [style.color]="ticketPrices[date.month][date.day]?.color"
+                                                               class="datepicker-sum">{{ticketPrices[date.month][date.day]?.price}}</div>
                                                         </ng-container>
                                                         <ng-container
                                                           *ngTemplateOutlet="dateTemplate; context: { $implicit: date }"></ng-container>
