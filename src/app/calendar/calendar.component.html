@@ -43,7 +43,7 @@
                    (click)="onInputClick()">
                  <input
                    class="calendar-input"
-                   #inputfield2
+                   #secondInputField
                    type="text"
                    [attr.id]="inputId + 2"
                    [attr.name]="name"
@@ -79,8 +79,7 @@
 <!--                <i *ngIf="showClear && !disabled && value != null" class="p-calendar-clear-icon pi pi-times"-->
 <!--                   (click)="clear()"></i>-->
                 <button type="button" [attr.aria-label]="iconAriaLabel" *ngIf="showIcon"
-                        (click)="onButtonClick($event, inputfield)" class="p-datepicker-trigger" [disabled]="disabled"
-                        tabindex="0"></button>
+                        (click)="onButtonClick($event, inputfield)" class="p-datepicker-trigger" [disabled]="disabled"></button>
             </ng-template>
          <ng-template [ngIf]="!inline && inputId == 'simple'">
               <input
@@ -110,8 +109,7 @@
 <!--                <i *ngIf="showClear && !disabled && value != null" class="p-calendar-clear-icon pi pi-times"-->
 <!--                   (click)="clear()"></i>-->
                 <button type="button" [attr.aria-label]="iconAriaLabel" *ngIf="showIcon"
-                        (click)="onButtonClick($event, inputfield)" class="p-datepicker-trigger" [disabled]="disabled"
-                        tabindex="0"></button>
+                        (click)="onButtonClick($event, inputfield)" class="p-datepicker-trigger" [disabled]="disabled"></button>
             </ng-template>
             <div
               #contentWrapper
