@@ -1,5 +1,5 @@
-import {animate, AnimationEvent, state, style, transition, trigger} from '@angular/animations';
-import {CommonModule} from '@angular/common';
+import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,7 +20,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   OverlayService,
   PrimeNGConfig,
@@ -28,10 +28,10 @@ import {
   SharedModule,
   TranslationKeys
 } from '../calendar/api/public_api';
-import {ConnectedOverlayScrollHandler, DomHandler} from '../calendar/dom/public_api';
-import {ObjectUtils, UniqueComponentId, ZIndexUtils} from '../calendar/utils/public_api';
-import {Subscription} from 'rxjs';
-import {AngularSvgIconModule} from "angular-svg-icon";
+import { ConnectedOverlayScrollHandler, DomHandler } from '../calendar/dom/public_api';
+import { ObjectUtils, UniqueComponentId, ZIndexUtils } from '../calendar/utils/public_api';
+import { Subscription } from 'rxjs';
+import { AngularSvgIconModule } from "angular-svg-icon";
 
 export const CALENDAR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -558,12 +558,13 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
   }
 
 
-  constructor(public el: ElementRef,
-              public renderer: Renderer2,
-              public cd: ChangeDetectorRef,
-              private zone: NgZone,
-              private config: PrimeNGConfig,
-              public overlayService: OverlayService
+  constructor(
+    public el: ElementRef,
+    public renderer: Renderer2,
+    public cd: ChangeDetectorRef,
+    public overlayService: OverlayService,
+    private zone: NgZone,
+    private config: PrimeNGConfig,
   ) {
   }
 
@@ -633,19 +634,11 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  getTranslation(option
-                   :
-                   string
-  ) {
+  getTranslation(option: string) {
     return this.config.getTranslation(option);
   }
 
-  populateYearOptions(start
-                        :
-                        number, end
-                        :
-                        number
-  ) {
+  populateYearOptions(start: number, end: number) {
     this.yearOptions = [];
 
     for (let i = start; i <= end; i++) {
@@ -682,12 +675,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return yearPickerValues;
   }
 
-  createMonths(month
-                 :
-                 number, year
-                 :
-                 number
-  ) {
+  createMonths(month: number, year: number) {
     this.months = this.months = [];
     this.rangeDates = [];
     for (let i = 0; i < this.numberOfMonths; i++) {
@@ -702,10 +690,7 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     }
   }
 
-  getWeekNumber(date
-                  :
-                  Date
-  ) {
+  getWeekNumber(date: Date) {
     let checkDate = new Date(date.getTime());
     checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7));
     let time = checkDate.getTime();
@@ -714,12 +699,8 @@ export class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     return Math.floor(Math.round((time - checkDate.getTime()) / 86400000) / 7) + 1;
   }
 
-  createMonth(month
-                :
-                number, year
-                :
-                number
-  ) {
+  createMonth(month: number, year: number) {
+    console.log(1)
     let dates: any = [];
     let firstDay = this.getFirstDayOfMonthIndex(month, year);
     let daysLength = this.getDaysCountInMonth(month, year);
